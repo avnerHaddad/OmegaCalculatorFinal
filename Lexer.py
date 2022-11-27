@@ -1,43 +1,39 @@
-from Config import TokenDict, numbers
-import Token
+from Config import TokenDict, digs
+from Token import Token
+
+
 class Lexer:
-    def __init__(self, input):
-        self.input = input
-        self.index = 0
+    def __init__(self, equation):
+        self.equation = equation
+        self.iterator = 0
         self.tokens = []
 
-
-    def __insertToken(self,TYPE, value = None):
+    def __insertToken(self, TYPE, value=None):
         self.tokens.append(Token(TYPE, value))
 
     def __getTokens(self):
-        while self.index < len(self.input):
-            if self.__ValAt(self, self.index) in numbers:
+        while self.iterator < len(self.equation):
+            if self.__ValAt() in digs:
                 self.__getNumberToken()
-                self.index += 1
 
 
             else:
-                self.__insertToken(self, TokenDict(self.input(self.index)))
-                self.index += 1
+                self.__insertToken(TokenDict[self.equation[self.iterator]])
+                self.iterator += 1
 
+    def __ValAt(self):
+        if self.iterator < len(self.equation):
+            return self.equation[self.iterator]
 
-
-    def __ValAt(self, index):
-        return self.input(self.index)
     def __getNumberToken(self):
-        number  = ''
-        while (self.__ValAt(self, self.index) in numbers or self.__ValAt(self, self.index) == '.') and self.index >= len(self.input):
-            number += self.__ValAt(self, self.index)
-            self.index += 1
+        number = ''
+        while (self.__ValAt() in digs or self.__ValAt() == '.') and self.iterator < len(
+                self.equation):
+            number += self.__ValAt()
+            self.iterator += 1
 
-        self.__insertToken(self, 'NUM', float(number))
-
-
+        self.__insertToken('NUM', float(number))
 
     def GetTokens(self):
         self.__getTokens()
         return self.tokens
-
-
-
