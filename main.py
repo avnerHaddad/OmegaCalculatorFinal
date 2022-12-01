@@ -6,3 +6,4 @@ listOfTokens = (lexer.GetTokens())
 for i in listOfTokens:
     print(i)
 parser = Mparser(str)
+parser.PrintParsed()

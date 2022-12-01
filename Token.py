@@ -7,7 +7,7 @@ class Token():
             self.type = type
             self.value = value
         else:
-            self.type = 'error'
+            self.type = 'type is not in TokenTypes'
             self.value = 0
             # add an exception later
 

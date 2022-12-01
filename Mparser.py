@@ -7,23 +7,31 @@ class Mparser:
         self.lexer = Lexer(str)
         self.index = 0
         self.tokens = self.lexer.GetTokens()
+        self.head = self.Parse()
 
     def Parse(self):
-        return self.__level1()
-        pass
-
+        head = self.__level1()
+        return head
 
     def __Next(self):
-        self.index += 1
+        try:
+            self.index += 1
+            self.tokens[self.index]
+        except IndexError:
+            pass
+
 
     def __curVal(self):
-        self.tokens[self.index]
+        if(self.index >= len(self.tokens)):
+            return None
+        else:
+            return self.tokens[self.index]
 
 
     def __level1(self):
         head = self.__level2()
 
-        while(self.__curVal() != None and self.__curVal() in level1):
+        while(self.__curVal() != None and self.__curVal().type in level1):
             type = self.__curVal().type
             self.__Next()
             head = TokenNode(head, self.__level2(), type)
@@ -32,7 +40,7 @@ class Mparser:
     def __level2(self):
         head = self.__level3()
 
-        while (self.__curVal() != None and self.__curVal() in level2):
+        while (self.__curVal() != None and self.__curVal().type in level2):
             type = self.__curVal().type
             self.__Next()
             head = TokenNode(head, self.__level2(), type)
@@ -41,7 +49,7 @@ class Mparser:
     def __level3(self):
         head = self.__level4()
 
-        while (self.__curVal() != None and self.__curVal() in level3):
+        while (self.__curVal() != None and self.__curVal().type in level3):
             type = self.__curVal().type
             self.__Next()
             head = TokenNode(head, self.__level4(), type)
@@ -51,7 +59,7 @@ class Mparser:
     def __level4(self):
         head = self.__level5()
 
-        while (self.__curVal() != None and self.__curVal() in level4):
+        while (self.__curVal() != None and self.__curVal().type in level4):
             type = self.__curVal().type
             self.__Next()
             head = TokenNode(head, self.__level5(), type)
@@ -61,7 +69,7 @@ class Mparser:
     def __level5(self):
         head = self.__level6()
 
-        while (self.__curVal() != None and self.__curVal() in level5):
+        while (self.__curVal() != None and self.__curVal().type in level5):
             type = self.__curVal().type
             self.__Next()
             head = TokenNode(head, self.__level6(), type)
@@ -71,7 +79,7 @@ class Mparser:
     def __level6(self):
         head = self.__level7()
 
-        while (self.__curVal() != None and self.__curVal() in level6):
+        while (self.__curVal() != None and self.__curVal().type in level6):
             type = self.__curVal().type
             self.__Next()
             head = TokenNode(head, self.__level7(), type)
@@ -84,15 +92,28 @@ class Mparser:
             self.__Next()
             head = self.__level1()
             if (self.__curVal().type != 'BRACKET_CLOSE'):
-                raise Exception("unclosed bracket")
+                raise Exception("unclosed bracket error")
             self.__Next()
 
-        elif (self.__curVal() != None and self.__curVal() in level7):
+        elif (self.__curVal() != None and self.__curVal().type in level7):
             type = self.__curVal().type
             self.__Next()
-            head = TokenNode(head, None, type)
+            head = TokenNode(head.value, None, type)
         elif self.__curVal().type in level1:
             type = self.__curVal().type
             self.__Next()
             return TokenNode(self.__level7(), None, type)
         return head
+
+    def PrintParsed(self):
+        self.__printParsedRecursion(self.head)
+    def __printParsedRecursion(self,head):
+        if(head.type != 'NUM'):
+            print(head.type)
+            self.__printParsedRecursion(head.val1)
+            self.__printParsedRecursion(head.val2)
+            print("did it")
+        if(head.type == 'NUM'):
+            print(' val is: ' + str(head.val1))
+            print(' val is: ' + str(head.val2))
+
