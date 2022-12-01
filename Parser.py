@@ -30,7 +30,7 @@ class Parser:
         return head
 
     def __level2(self):
-        head = self.__level2()
+        head = self.__level3()
 
         while (self.__curVal() != None and self.__curVal() in level2):
             type = self.__curVal().type
@@ -39,10 +39,44 @@ class Parser:
         return head
 
     def __level3(self):
-        pass
+        head = self.__level4()
+
+        while (self.__curVal() != None and self.__curVal() in level3):
+            type = self.__curVal().type
+            self.__Next()
+            head = TokenNode(head, self.__level4(), type)
+        return head
+
+
     def __level4(self):
-        pass
+        head = self.__level5()
+
+        while (self.__curVal() != None and self.__curVal() in level4):
+            type = self.__curVal().type
+            self.__Next()
+            head = TokenNode(head, self.__level5(), type)
+        return head
+
+
     def __level5(self):
-        pass
+        head = self.__level6()
+
+        while (self.__curVal() != None and self.__curVal() in level5):
+            type = self.__curVal().type
+            self.__Next()
+            head = TokenNode(head, self.__level6(), type)
+        return head
+
+
     def __level6(self):
+        head = self.__level7()
+
+        while (self.__curVal() != None and self.__curVal() in level6):
+            type = self.__curVal().type
+            self.__Next()
+            head = TokenNode(head, self.__level7(), type)
+        return head
+
+
+    def __level7(self):
         pass
