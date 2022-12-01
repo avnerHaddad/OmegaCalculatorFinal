@@ -79,4 +79,20 @@ class Parser:
 
 
     def __level7(self):
-        pass
+        head = self.__curVal()
+        if(self.__curVal().type == 'BRACKET_OPEN'):
+            self.__Next()
+            head = self.__level1()
+            if (self.__curVal().type != 'BRACKET_CLOSE'):
+                raise Exception("unclosed bracket")
+            self.__Next()
+
+        elif (self.__curVal() != None and self.__curVal() in level7):
+            type = self.__curVal().type
+            self.__Next()
+            head = TokenNode(head, None, type)
+        elif self.__curVal().type in level1:
+            type = self.__curVal().type
+            self.__Next()
+            return TokenNode(self.__level7(), None, type)
+        return head

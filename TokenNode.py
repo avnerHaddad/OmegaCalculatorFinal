@@ -6,6 +6,6 @@ class TokenNode:
         self.type = type
 
 def calc(self):
-    return funcDict[self.type](self.val1, self.val2)
+    return self.type(self.val1, self.val2)
 
 
