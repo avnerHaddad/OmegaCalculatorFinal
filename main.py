@@ -1,8 +1,8 @@
 from Lexer import Lexer
-from Parser import Parser
+from Mparser import Mparser
 str = input()
 lexer = Lexer(str)
 listOfTokens = (lexer.GetTokens())
 for i in listOfTokens:
     print(i)
-parser = Parser(str)
+parser = Mparser(str)

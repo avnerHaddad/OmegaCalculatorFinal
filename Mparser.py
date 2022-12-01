@@ -1,10 +1,10 @@
 from Lexer import Lexer
 from TokenNode import TokenNode
 from Config import *
-class Parser:
+class Mparser:
 
-    def __int__(self, input):
-        self.lexer = Lexer(input)
+    def __init__(self, str):
+        self.lexer = Lexer(str)
         self.index = 0
         self.tokens = self.lexer.GetTokens()
 
