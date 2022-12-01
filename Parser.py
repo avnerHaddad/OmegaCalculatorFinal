@@ -16,4 +16,16 @@ class Parser:
         self.tokens[self.index]
 
 
+    def __level1(self):
+        pass
 
+    def __level2(self):
+        pass
+    def __level3(self):
+        pass
+    def __level4(self):
+        pass
+    def __level5(self):
+        pass
+    def __level6(self):
+        pass
