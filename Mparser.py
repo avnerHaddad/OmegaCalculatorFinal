@@ -79,7 +79,7 @@ class Mparser:
         while self.__curVal() is not None and self.__curVal().type in level6:
             type = self.__curVal().type
             self.__Next()
-            head = TokenNode(head, self.__level7(), type)
+            return TokenNode(self.__level7(), None, type)
         return head
 
     def __level7(self):
