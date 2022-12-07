@@ -12,5 +12,5 @@ parser.PrintParsed()
 
 print("\n\n\n\n")
 Inter = Interpreter(str)
-print(Inter.Solve())
+print(Inter.solve())
 
