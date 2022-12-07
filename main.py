@@ -1,6 +1,7 @@
 from Lexer import Lexer
 from Mparser import Mparser
 from Interpreter import Interpreter
+from Config import *
 str = input()
 
 """
@@ -15,4 +16,6 @@ parser.PrintParsed()
 print("\n\n\n\n")
 Inter = Interpreter(str)
 print(Inter.solve())
+
+
 

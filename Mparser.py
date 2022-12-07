@@ -95,6 +95,11 @@ class Mparser:
             type = self.__curVal().type
             self.__Next()
             head = TokenNode(head.value, None, type)
+            if(self.__curVal().type in PostFixOps):
+                head = TokenNode(head,None,self.__curVal().type)
+
+
+
         elif self.__curVal().type in level1:
             type = self.__curVal().type
             self.__Next()
