@@ -42,7 +42,8 @@ class Lexer:
                 dotCount += 1
                 if(dotCount > 1):
                     raise Exception("duplicate decimal point")
-            number += self.__curChar()
+            if self.__curChar() != ' ':
+                number += self.__curChar()
             self.Next()
 
         self.__insertToken('NUM', float(number))
