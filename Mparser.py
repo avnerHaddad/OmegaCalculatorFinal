@@ -85,7 +85,7 @@ class Mparser:
         head = self.curVal
         if self.curVal.type == 'BRACKET_OPEN':
             self.__Next()
-            head = self.__level1()
+            head = self.generciLevel(1)
             if self.curVal.type != 'BRACKET_CLOSE':
                 raise Exception("unclosed bracket error")
             self.__Next()
@@ -95,21 +95,10 @@ class Mparser:
             self.__Next()
             head = TokenNode(head.value, None, type)
 
-        elif self.curVal.type in level1 or self.curVal.type in PostFixOps or self.curVal.type is 'TILDA':
+        elif self.curVal.type in SingleDigOps:
             type = self.curVal.type
             self.__Next()
-            return TokenNode(self.__level7(), None, type)
+            return TokenNode(self.finalLevel(), None, type)
         return head
 
-    def PrintParsed(self):
-        self.__printParsedRecursion(self.head)
 
-    def __printParsedRecursion(self, head):
-        if head.type != 'NUM':
-            print(head.type)
-            self.__printParsedRecursion(head.val1)
-            self.__printParsedRecursion(head.val2)
-            print("did it")
-        if head.type == 'NUM':
-            print(' val is: ' + str(head.val1))
-            print(' val is: ' + str(head.val2))
