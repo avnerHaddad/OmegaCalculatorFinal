@@ -68,6 +68,15 @@ class Mparser:
         else:
             return self.tokens[self.index]
 
+
+    def generciLevel(self,level):
+        head = self.generciLevel(level+1)
+
+        while self.curVal is not None and self.curVal.type in levelDict[level]:
+            type = self.curVal.type
+            self.__Next()
+            head = TokenNode(head, self.generciLevel(level+1), type)
+        return head
     def __level1(self):
         head = self.__level2()
 
