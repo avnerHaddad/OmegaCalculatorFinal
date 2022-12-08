@@ -38,7 +38,7 @@ class Mparser:
 
 
     def Parse(self):
-        head = self.__level1()
+        head = self.generciLevel(1)
         return head
 
 
@@ -70,66 +70,16 @@ class Mparser:
 
 
     def generciLevel(self,level):
+        if level == 7:
+            return self.__level7()
         head = self.generciLevel(level+1)
 
-        while self.curVal is not None and self.curVal.type in levelDict[level]:
+        while self.curVal is not None and self.curVal.type in levelDict[level] and self.curVal.type not in PostFixOps:
             type = self.curVal.type
             self.__Next()
             head = TokenNode(head, self.generciLevel(level+1), type)
         return head
-    def __level1(self):
-        head = self.__level2()
 
-        while self.curVal is not None and self.curVal.type in level1:
-            type = self.curVal.type
-            self.__Next()
-            head = TokenNode(head, self.__level2(), type)
-        return head
-
-    def __level2(self):
-        head = self.__level3()
-
-        while self.curVal is not None and self.curVal.type in level2:
-            type = self.curVal.type
-            self.__Next()
-            head = TokenNode(head, self.__level2(), type)
-        return head
-
-    def __level3(self):
-        head = self.__level4()
-
-        while self.curVal is not None and self.curVal.type in level3:
-            type = self.curVal.type
-            self.__Next()
-            head = TokenNode(head, self.__level4(), type)
-        return head
-
-    def __level4(self):
-        head = self.__level5()
-
-        while self.curVal is not None and self.curVal.type in level4:
-            type = self.curVal.type
-            self.__Next()
-            head = TokenNode(head, self.__level5(), type)
-        return head
-
-    def __level5(self):
-        head = self.__level6()
-
-        while self.curVal is not None and self.curVal.type in level5:
-            type = self.curVal.type
-            self.__Next()
-            head = TokenNode(head, self.__level7(), type)
-        return head
-
-    def __level6(self):
-        head = self.__level7()
-
-        while self.curVal is not None and self.curVal.type in level6:
-            type = self.curVal.type
-            self.__Next()
-            return TokenNode(self.__level7(), None, type)
-        return head
 
     def __level7(self):
         head = self.curVal
