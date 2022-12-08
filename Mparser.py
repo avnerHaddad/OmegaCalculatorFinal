@@ -13,30 +13,6 @@ class Mparser:
         self.head = self.Parse()
         self.fixPostFixOps()
 
-    def fixPostFixOps(self):
-        while self.curVal is not None:
-            if self.curVal.type in PostFixOps:
-                toSwtich = self.tokens.pop(self.index)
-                self.__Back()
-                if self.curVal.type not in digs and self.curVal.type not in brackets:
-                    raise Exception("post fix operator with no number before to operate on")
-                if self.curVal.type in brackets:
-                    while self.curVal.type is not 'BRACKET_OPEN':
-                        self.__Back()
-                if self.index >0:
-                    self.__Back()
-
-                while \
-                        TokenPowerDict[self.curVal.type] >= TokenPowerDict[
-                            toSwtich.type] and self.curVal.type not in digs and self.index is not 0 and self.curVal.type in SingleDigOps:
-                    self.__Back()
-                self.tokens.insert(self.index, toSwtich)
-                self.__Next()
-            self.__Next()
-        self.index = 0
-        self.__Updatecur()
-
-
     def Parse(self):
         head = self.generciLevel(1)
         return head
@@ -68,7 +44,28 @@ class Mparser:
         else:
             return self.tokens[self.index]
 
+    def fixPostFixOps(self):
+        while self.curVal is not None:
+            if self.curVal.type in PostFixOps:
+                toSwtich = self.tokens.pop(self.index)
+                self.__Back()
+                if self.curVal.type not in digs and self.curVal.type not in brackets:
+                    raise Exception("post fix operator with no number before to operate on")
+                if self.curVal.type in brackets:
+                    while self.curVal.type is not 'BRACKET_OPEN':
+                        self.__Back()
+                if self.index >0:
+                    self.__Back()
 
+                while \
+                        TokenPowerDict[self.curVal.type] >= TokenPowerDict[
+                            toSwtich.type] and self.curVal.type not in digs and self.index is not 0 and self.curVal.type in SingleDigOps:
+                    self.__Back()
+                self.tokens.insert(self.index, toSwtich)
+                self.__Next()
+            self.__Next()
+        self.index = 0
+        self.__Updatecur()
     def generciLevel(self,level):
         if level == finalLevel:
             return self.finalLevel()
