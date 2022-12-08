@@ -22,6 +22,9 @@ class Mparser:
                 if self.__curVal().type in brackets:
                     while self.__curVal().type is not 'BRACKET_OPEN':
                         self.index -= 1
+                if self.index >0:
+                    self.index -= 1
+
                 while \
                         TokenPowerDict[self.__curVal().type] >= TokenPowerDict[
                             toSwtich.type] and self.__curVal().type not in digs and self.index is not 0 and self.__curVal().type in SingleDigOps:
