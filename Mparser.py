@@ -9,7 +9,23 @@ class Mparser:
         self.lexer = Lexer(str)
         self.index = 0
         self.tokens = self.lexer.GetTokens()
-        self.head = self.Parse()
+        # self.head = self.Parse()
+
+    def fixPostFixOps(self):
+        while self.__curVal() is not None:
+            if self.__curVal().type in PostFixOps:
+                toSwtich = self.tokens.pop(self.index)
+                self.index -= 1
+                if self.__curVal().type not in digs:
+                    raise Exception("post fix operator with no number before to operate on")
+                self.index -= 1
+                while \
+                        TokenPowerDict[self.__curVal().type] >= TokenPowerDict[
+                            toSwtich.type] and self.__curVal().type not in digs and self.index is not 0:
+                    self.index -= 1
+                self.tokens.insert(self.index, toSwtich)
+                self.index += 1
+            self.index += 1
 
     def Parse(self):
         head = self.__level1()
