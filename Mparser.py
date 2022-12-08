@@ -70,8 +70,8 @@ class Mparser:
 
 
     def generciLevel(self,level):
-        if level == 7:
-            return self.__level7()
+        if level == finalLevel:
+            return self.finalLevel()
         head = self.generciLevel(level+1)
 
         while self.curVal is not None and self.curVal.type in levelDict[level] and self.curVal.type not in PostFixOps:
@@ -81,7 +81,7 @@ class Mparser:
         return head
 
 
-    def __level7(self):
+    def finalLevel(self):
         head = self.curVal
         if self.curVal.type == 'BRACKET_OPEN':
             self.__Next()
