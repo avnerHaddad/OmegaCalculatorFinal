@@ -17,12 +17,16 @@ class Mparser:
             if self.__curVal().type in PostFixOps:
                 toSwtich = self.tokens.pop(self.index)
                 self.index -= 1
-                if self.__curVal().type not in digs:
+                if self.__curVal().type not in digs and self.__curVal().type not in brackets:
                     raise Exception("post fix operator with no number before to operate on")
+                if self.__curVal().type in brackets:
+                    while self.__curVal().type is not 'BRACKET_OPEN':
+                        self.index -= 1
+                    self.index += 1
                 self.index -= 1
                 while \
                         TokenPowerDict[self.__curVal().type] >= TokenPowerDict[
-                            toSwtich.type] and self.__curVal().type not in digs and self.index is not 0:
+                            toSwtich.type] and self.__curVal().type not in digs and self.index is not 0 and self.__curVal().type in SingleDigOps:
                     self.index -= 1
                 self.tokens.insert(self.index, toSwtich)
                 self.index += 1
