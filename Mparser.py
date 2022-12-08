@@ -9,7 +9,8 @@ class Mparser:
         self.lexer = Lexer(str)
         self.index = 0
         self.tokens = self.lexer.GetTokens()
-        # self.head = self.Parse()
+        self.fixPostFixOps()
+        self.head = self.Parse()
 
     def fixPostFixOps(self):
         while self.__curVal() is not None:
@@ -26,6 +27,7 @@ class Mparser:
                 self.tokens.insert(self.index, toSwtich)
                 self.index += 1
             self.index += 1
+        self.index = 0
 
     def Parse(self):
         head = self.__level1()
@@ -86,7 +88,7 @@ class Mparser:
         while self.__curVal() is not None and self.__curVal().type in level5:
             type = self.__curVal().type
             self.__Next()
-            head = TokenNode(head, self.__level6(), type)
+            head = TokenNode(head, self.__level7(), type)
         return head
 
     def __level6(self):
@@ -111,12 +113,8 @@ class Mparser:
             type = self.__curVal().type
             self.__Next()
             head = TokenNode(head.value, None, type)
-            if (self.__curVal() is not None) and (self.__curVal().type in PostFixOps):
-                head = TokenNode(head, None, self.__curVal().type)
 
-
-
-        elif self.__curVal().type in level1:
+        elif self.__curVal().type in level1 or self.__curVal().type in PostFixOps or self.__curVal().type is 'TILDA':
             type = self.__curVal().type
             self.__Next()
             return TokenNode(self.__level7(), None, type)

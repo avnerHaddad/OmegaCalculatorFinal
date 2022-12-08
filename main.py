@@ -14,12 +14,8 @@ parser.PrintParsed()
 """
 
 print("\n\n\n\n")
-parser= Mparser(str)
-parser.fixPostFixOps()
-print(parser.tokens)
-#Inter = Interpreter(str)
-
-#print(Inter.solve())
+Inter = Interpreter(str)
+print(Inter.solve())
 
 
 
