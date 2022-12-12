@@ -1,5 +1,5 @@
-from Config import TokenDict, digs, operators
 from Token import Token
+from Config import *
 
 
 class Lexer:
@@ -29,7 +29,7 @@ class Lexer:
             elif self.__curChar() in operators:
                 self.__insertToken(TokenDict[self.equation[self.iterator]])
                 self.parsedNum = True
-                if(self.__curChar() is not '-'):
+                if self.__curChar() is not '-' and TokenDict[self.__curChar()] not in PostFixOps:
                     self.parsedNum = False
                 self.Next()
             else:
