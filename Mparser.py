@@ -10,8 +10,8 @@ class Mparser:
         self.index = 0
         self.tokens = self.lexer.GetTokens()
         self.curVal = self.tokens[self.index]
+        self.fixPostFixOps()
         self.head = self.Parse()
-        #self.fixPostFixOps()
 
     def Parse(self):
         head = self.generciLevel(1)
@@ -54,19 +54,20 @@ class Mparser:
                 if self.curVal.type in brackets:
                     while self.curVal.type is not 'BRACKET_OPEN':
                         self.__Back()
-                if self.index >0:
-                    self.__Back()
 
-                while \
-                        TokenPowerDict[self.curVal.type] >= TokenPowerDict[
-                            toSwtich.type] and (self.curVal.type not in digs) and (self.index is not 0) and self.curVal.type in SingleDigOps:
+                while self.index >0 and TokenPowerDict[self.prevVal().type] >= TokenPowerDict[toSwtich.type]:
                     self.__Back()
-                self.__Next()
                 self.tokens.insert(self.index, toSwtich)
-                self.__Next()
+                self.NextNonePostFix()
             self.__Next()
         self.index = 0
         self.__Updatecur()
+
+
+    def NextNonePostFix(self):
+        while self.curVal.type in PostFixOps:
+            self.__Next()
+
     def generciLevel(self,level):
         if level == finalLevel:
             return self.finalLevel()
@@ -97,6 +98,15 @@ class Mparser:
             type = self.curVal.type
             self.__Next()
             return TokenNode(self.finalLevel(), None, type)
+        else:
+            raise Exception("operator invalid in currrent index")
+
         return head
+
+    def prevVal(self):
+        if self.index > 0:
+            return self.tokens[self.index-1]
+        else:
+            raise Exception("error")
 
 

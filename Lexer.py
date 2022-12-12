@@ -28,7 +28,9 @@ class Lexer:
                 self.parsedNum = True
             elif self.__curChar() in operators:
                 self.__insertToken(TokenDict[self.equation[self.iterator]])
-                self.parsedNum = False
+                self.parsedNum = True
+                if(self.__curChar() is not '-'):
+                    self.parsedNum = False
                 self.Next()
             else:
                 raise Exception("char" + self.__curChar() + " is not a part of the calc")
