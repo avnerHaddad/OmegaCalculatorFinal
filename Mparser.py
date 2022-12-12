@@ -11,7 +11,7 @@ class Mparser:
         self.tokens = self.lexer.GetTokens()
         self.curVal = self.tokens[self.index]
         self.head = self.Parse()
-        self.fixPostFixOps()
+        #self.fixPostFixOps()
 
     def Parse(self):
         head = self.generciLevel(1)
@@ -59,8 +59,9 @@ class Mparser:
 
                 while \
                         TokenPowerDict[self.curVal.type] >= TokenPowerDict[
-                            toSwtich.type] and self.curVal.type not in digs and self.index is not 0 and self.curVal.type in SingleDigOps:
+                            toSwtich.type] and (self.curVal.type not in digs) and (self.index is not 0) and self.curVal.type in SingleDigOps:
                     self.__Back()
+                self.__Next()
                 self.tokens.insert(self.index, toSwtich)
                 self.__Next()
             self.__Next()

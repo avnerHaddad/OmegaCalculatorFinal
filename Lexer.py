@@ -8,20 +8,27 @@ class Lexer:
         self.equation = equation
         self.iterator = 0
         self.tokens = []
+        self.parsedNum = False
 
     def __insertToken(self, TYPE, value=None):
         # inserts token to end of the token array
+        if TYPE == "SUB" and (not self.parsedNum):
+            TYPE = "UNARY_MINUS"
         self.tokens.append(Token(TYPE, value))
 
     def __getTokens(self):
         # fills up the token array from the user input
+        self.parsedNum = False
+
         while self.iterator < len(self.equation):
             if self.__curChar() == ' ':
                 self.Next()
             elif self.__curChar() in digs:
                 self.__getNumberToken()
+                self.parsedNum = True
             elif self.__curChar() in operators:
                 self.__insertToken(TokenDict[self.equation[self.iterator]])
+                self.parsedNum = False
                 self.Next()
             else:
                 raise Exception("char" + self.__curChar() + " is not a part of the calc")
