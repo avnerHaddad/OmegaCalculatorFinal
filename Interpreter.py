@@ -4,9 +4,12 @@ class Interpreter:
         self.parser = Mparser(str)
         self.head = self.parser.head
 
+    #func that calls the recursive solver
     def solve(self):
         return self.recursiveSolve(self.head)
 
+    # solves the binary tree that was generated from the parser, scans tree untl reaches final leaf then calculates
+    # back up using the internal calc method of each node
     def recursiveSolve(self, head):
         if not isinstance(head.val1, float) and head.val1 is not None:
             head.val1 = self.recursiveSolve(head.val1)
