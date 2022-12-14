@@ -10,6 +10,5 @@ class Token():
             self.type = 'type is not in TokenTypes'
             self.value = 0
             # add an exception later
-
     def __str__(self):
         return "type: " + self.type + " val:" + str(self.value)
