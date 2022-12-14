@@ -1,5 +1,6 @@
 from Token import Token
 from Config import *
+from Exceptions import*
 
 
 class Lexer:
@@ -8,7 +9,7 @@ class Lexer:
         self.equation = equation
         self.iterator = 0
         self.tokens = []
-        self.insertUnary = False
+        self.insertUnary = True
         self.tildaAvalable = True
 
     # func that inserts a token to the list based on Type and value, inserts an unary minus if last parsed
@@ -17,35 +18,35 @@ class Lexer:
         # inserts token to end of the token array
         if TYPE is 'SUB' and self.insertUnary:
             TYPE = "UNARY_MINUS"
-        elif TYPE is 'TILDA' and (not self.tildaAvalable) and self.insertUnary:
-            raise Exception(TILDAEXCEPTION)
-
+        elif TYPE is 'TILDA' and (not self.tildaAvalable):
+            raise Exception(DoubleTildaExcecption)
+        elif TYPE is 'TILDA' and not self.insertUnary:
+            raise Exception(TildaException)
         self.tokens.append(Token(TYPE, value))
 
     # func that fills up the tokens list from the string the lexer is built of
     def __getTokens(self):
         # fills up the token array from the user input
-        self.opSUB = False
+        self.insertUnary = True
 
         while self.iterator < len(self.equation):
             if self.__curChar() == ' ':
                 self.Next()
             elif self.__curChar() in digs:
                 self.__getNumberToken()
-                self.insertUnary = True
-                self.tildaAvalable = False
+                self.insertUnary = False
             elif self.__curChar() in operators:
+                self.__insertToken(TokenDict[self.equation[self.iterator]])
                 if TokenDict[self.__curChar()] is 'TILDA':
                     self.tildaAvalable = False
-                self.__insertToken(TokenDict[self.equation[self.iterator]])
                 self.insertUnary = True
                 if TokenDict[self.__curChar()] not in SingleDigOps:
-                    self.insertUnary = False
+                    self.insertUnary = True
 
 
                 self.Next()
             else:
-                raise Exception(UNKOUwnCHAREXCEPTION)
+                raise Exception(InvalidCharException)
 
     def __curChar(self):
         # return the value/char the iterator is currently at
@@ -60,9 +61,9 @@ class Lexer:
         dotCount = 0
         while (self.__curChar() in digs or self.__curChar() == '.') and self.iterator < len(
                 self.equation):
-            if (self.__curChar() == '.'):
+            if self.__curChar() == '.':
                 dotCount += 1
-                if (dotCount > 1):
+                if dotCount > 1:
                     raise Exception("duplicate decimal point")
             if self.__curChar() != ' ':
                 number += self.__curChar()
