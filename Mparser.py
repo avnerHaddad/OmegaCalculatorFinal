@@ -55,7 +55,7 @@ class Mparser:
                 toSwtich = self.tokens.pop(self.index)
                 self.__Back()
                 if self.curVal.type not in digs and self.curVal.type not in brackets:
-                    raise Exception("post fix operator with no number before to operate on")
+                    raise Exception(PostFixOperatorOutOfPlaceException)
                 if self.curVal.type in brackets:
                     while self.curVal.type is not 'BRACKET_OPEN':
                         self.__Back()
@@ -93,7 +93,7 @@ class Mparser:
             self.__Next()
             head = self.generciLevel(1)
             if self.curVal.type != 'BRACKET_CLOSE':
-                raise Exception("unclosed bracket error")
+                raise Exception(UnclosedBracketException)
             self.__Next()
 
         elif self.curVal is not None and self.curVal.type in level7:
@@ -115,4 +115,4 @@ class Mparser:
         if self.index > 0:
             return self.tokens[self.index - 1]
         else:
-            raise Exception("error")
+            raise IndexError

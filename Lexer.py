@@ -1,6 +1,6 @@
 from Token import Token
 from Config import *
-from Exceptions import*
+from Exceptions import *
 
 
 class Lexer:
@@ -10,7 +10,8 @@ class Lexer:
         self.iterator = 0
         self.tokens = []
         self.insertUnary = True
-        self.tildaAvalable = True
+        self.tildaAvailable = True
+        self.parsedOperator = False
 
     # func that inserts a token to the list based on Type and value, inserts an unary minus if last parsed
     # requirements are met
@@ -18,10 +19,12 @@ class Lexer:
         # inserts token to end of the token array
         if TYPE is 'SUB' and self.insertUnary:
             TYPE = "UNARY_MINUS"
-        elif TYPE is 'TILDA' and (not self.tildaAvalable):
+        elif TYPE is 'TILDA' and (not self.tildaAvailable):
             raise Exception(DoubleTildaExcecption)
         elif TYPE is 'TILDA' and not self.insertUnary:
             raise Exception(TildaException)
+        elif TYPE is not 'NUM':
+            self.parsedOperator = True
         self.tokens.append(Token(TYPE, value))
 
     # func that fills up the tokens list from the string the lexer is built of
@@ -36,17 +39,20 @@ class Lexer:
                 self.__getNumberToken()
                 self.insertUnary = False
             elif self.__curChar() in operators:
+                if self.parsedOperator:
+                    raise Exception(DoubleOperatorException)
                 self.__insertToken(TokenDict[self.equation[self.iterator]])
                 if TokenDict[self.__curChar()] is 'TILDA':
-                    self.tildaAvalable = False
+                    self.tildaAvailable = False
                 self.insertUnary = True
                 if TokenDict[self.__curChar()] not in SingleDigOps:
                     self.insertUnary = True
 
-
                 self.Next()
             else:
                 raise Exception(InvalidCharException)
+        if self.parsedOperator:
+            raise Exception(UnusedOperatorException)
 
     def __curChar(self):
         # return the value/char the iterator is currently at
@@ -70,6 +76,7 @@ class Lexer:
             self.Next()
 
         self.__insertToken('NUM', float(number))
+        self.parsedOperator = False
 
     # public func that calls the internal get tokens and return the list genertated
     def GetTokens(self):
