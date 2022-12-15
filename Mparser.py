@@ -21,6 +21,8 @@ class Mparser:
     # func that calls the recursive decent algorithm
     def Parse(self):
         self.tokens = self.GetLexertokens()
+        if self.tokens is None:
+            return None
         self.curVal = self.tokens[self.index]
         self.fixPostFixOps()
         head = self.generciLevel(1)

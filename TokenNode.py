@@ -7,6 +7,9 @@ class TokenNode:
 
     #func that executes the func for the corosponding operator type of the token using the dictonary
     def calc(self):
-        return funcDict[self.type](self.val1, self.val2)
+        try:
+            return funcDict[self.type](self.val1, self.val2)
+        except Exception as MathError:
+            print(str(MathError))
 
 

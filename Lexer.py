@@ -31,7 +31,6 @@ class Lexer:
     def __getTokens(self):
         # fills up the token array from the user input
         self.insertUnary = True
-
         while self.iterator < len(self.equation):
             if self.__curChar() == ' ':
                 self.Next()
@@ -86,8 +85,14 @@ class Lexer:
     # public func that calls the internal get tokens and return the list genertated
     def GetTokens(self):
         # func to call externally, return an array of tokens from the input
-        self.__getTokens()
-        return self.tokens
+        try:
+            self.__getTokens()
+            return self.tokens
+        except Exception as LexingError:
+            print(str(LexingError))
+            return None
+
+
 
     # moves the string index forward by 1
     def Next(self):

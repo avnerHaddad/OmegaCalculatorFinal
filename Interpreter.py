@@ -11,7 +11,11 @@ class Interpreter:
     def solve(self):
         try:
             self.head = self.parser.Parse()
-            print(str(self.recursiveSolve(self.head)))
+            if self.head is None:
+                return
+            ans = self.recursiveSolve(self.head)
+            if ans is not None:
+                print(str(ans))
         except Exception as parsingException:
             print(str(parsingException))
 
