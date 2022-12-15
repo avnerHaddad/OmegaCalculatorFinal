@@ -1,12 +1,19 @@
 from Mparser import Mparser
-class Interpreter:
-    def __init__(self,str):
-        self.parser = Mparser(str)
-        self.head = self.parser.head
+from Exceptions import *
 
-    #func that calls the recursive solver
+
+class Interpreter:
+    def __init__(self, str):
+        self.parser = Mparser(str)
+        self.head = None
+
+    # func that calls the recursive solver
     def solve(self):
-        return self.recursiveSolve(self.head)
+        try:
+            self.head = self.parser.Parse()
+            print(str(self.recursiveSolve(self.head)))
+        except Exception as parsingException:
+            print(str(parsingException))
 
     # solves the binary tree that was generated from the parser, scans tree untl reaches final leaf then calculates
     # back up using the internal calc method of each node

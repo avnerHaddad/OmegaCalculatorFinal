@@ -20,9 +20,9 @@ class Lexer:
         if TYPE is 'SUB' and self.insertUnary:
             TYPE = "UNARY_MINUS"
         elif TYPE is 'TILDA' and (not self.tildaAvailable):
-            raise Exception(DoubleTildaExcecption)
+            raise DoubleTildaExcecption
         elif TYPE is 'TILDA' and not self.insertUnary:
-            raise Exception(TildaException)
+            raise TildaException
         elif TYPE is not 'NUM' and TYPE not in PostFixOps and TYPE not in brackets:
             self.parsedOperator = True
         self.tokens.append(Token(TYPE, value))
@@ -43,7 +43,7 @@ class Lexer:
                 self.Next()
             elif self.__curChar() in operators:
                 if self.parsedOperator and TokenDict[self.__curChar()] not in SingleDigOps:
-                    raise Exception(DoubleOperatorException)
+                    raise DoubleOperatorException
                 self.__insertToken(TokenDict[self.equation[self.iterator]])
                 if TokenDict[self.__curChar()] is 'TILDA':
                     self.tildaAvailable = False
@@ -55,9 +55,9 @@ class Lexer:
 
 
             else:
-                raise Exception(InvalidCharException)
+                raise InvalidCharException(self.__curChar())
         if self.parsedOperator:
-            raise Exception(UnusedOperatorException)
+            raise UnusedOperatorException
 
     def __curChar(self):
         # return the value/char the iterator is currently at

@@ -15,11 +15,11 @@ class InvalidCharException(Exception):
         self.char = char
 
     def __str__(self):
-        return self.char + "is not supported by this calculator"
+        return str(self.char) + " is not supported by this calculator"
 
 
 class NegativeFactorialException(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
@@ -27,7 +27,7 @@ class NegativeFactorialException(Exception):
 
 
 class FloatFactorialException(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
@@ -35,7 +35,7 @@ class FloatFactorialException(Exception):
 
 
 class DoubleTildaExcecption(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
@@ -49,35 +49,35 @@ class EmptyInputException(Exception):
         return "please input something into the calculator, input must not be empty"
 
 class UnclosedBracketException(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
         return "all open brackets need to be closed off"
 
 class PostFixOperatorOutOfPlaceException(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
         return "Post fix operators must be after the number they are operated on(!,#...)"
 
 class ModByZeroException(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
         return "can not do module with 0 "
 
 class DoubleOperatorException(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
         return "can not place 2 double operand operators one after another"
 
 class UnusedOperatorException(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
@@ -85,7 +85,7 @@ class UnusedOperatorException(Exception):
 
 
 class ComplexNumberException(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
@@ -93,7 +93,7 @@ class ComplexNumberException(Exception):
 
 
 class SolamitException(Exception):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
