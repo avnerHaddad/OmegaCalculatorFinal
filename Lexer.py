@@ -23,7 +23,7 @@ class Lexer:
             raise Exception(DoubleTildaExcecption)
         elif TYPE is 'TILDA' and not self.insertUnary:
             raise Exception(TildaException)
-        elif TYPE is not 'NUM':
+        elif TYPE is not 'NUM' and TYPE not in PostFixOps and TYPE not in brackets:
             self.parsedOperator = True
         self.tokens.append(Token(TYPE, value))
 
@@ -38,8 +38,11 @@ class Lexer:
             elif self.__curChar() in digs:
                 self.__getNumberToken()
                 self.insertUnary = False
+            elif self.__curChar() in bracketSymbols:
+                self.__insertToken(TokenDict[self.equation[self.iterator]])
+                self.Next()
             elif self.__curChar() in operators:
-                if self.parsedOperator:
+                if self.parsedOperator and TokenDict[self.__curChar()] not in SingleDigOps:
                     raise Exception(DoubleOperatorException)
                 self.__insertToken(TokenDict[self.equation[self.iterator]])
                 if TokenDict[self.__curChar()] is 'TILDA':
@@ -49,6 +52,8 @@ class Lexer:
                     self.insertUnary = True
 
                 self.Next()
+
+
             else:
                 raise Exception(InvalidCharException)
         if self.parsedOperator:

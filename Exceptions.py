@@ -84,3 +84,18 @@ class UnusedOperatorException(Exception):
         return "left an operator with no number to operate on in the string"
 
 
+class ComplexNumberException(Exception):
+    def __init__(self, char):
+        pass
+
+    def __str__(self):
+        return "result is a complex number and therefore could not be calculated"
+
+
+class SolamitException(Exception):
+    def __init__(self, char):
+        pass
+
+    def __str__(self):
+        return "number is too big to use # on and is represented with E"
+

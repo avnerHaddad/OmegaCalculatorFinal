@@ -92,7 +92,7 @@ class Mparser:
         if self.curVal.type == 'BRACKET_OPEN':
             self.__Next()
             head = self.generciLevel(1)
-            if self.curVal.type != 'BRACKET_CLOSE':
+            if self.curVal.type is None or self.curVal.type != 'BRACKET_CLOSE':
                 raise Exception(UnclosedBracketException)
             self.__Next()
 
