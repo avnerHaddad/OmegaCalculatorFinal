@@ -9,6 +9,11 @@ class Lexer:
         self.equation = equation
         self.iterator = 0
         self.tokens = []
+        self.expectToParse = everything
+        #when parsing a num, expect to parse postfix ops and double digit ops
+        #when parsing a postfix op expect to parse a postfix op or a double digit op
+        #when parsing a double digit op, expect to parse a num or a pre fix op
+        # when parsing a tilda remove it from the expect to parse?
         self.insertUnary = True
         self.tildaAvailable = True
         self.parsedOperator = False
@@ -23,7 +28,7 @@ class Lexer:
             raise DoubleTildaExcecption
         elif TYPE is 'TILDA' and not self.insertUnary:
             raise TildaException
-        elif TYPE is not 'NUM' and TYPE not in PostFixOps and TYPE not in brackets:
+        elif TYPE in operators and (TYPE not in PostFixOps):
             self.parsedOperator = True
         self.tokens.append(Token(TYPE, value))
 
