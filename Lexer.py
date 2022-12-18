@@ -9,28 +9,60 @@ class Lexer:
         self.equation = equation
         self.iterator = 0
         self.tokens = []
-        self.expectToParse = everything
-        #when parsing a num, expect to parse postfix ops and double digit ops
-        #when parsing a postfix op expect to parse a postfix op or a double digit op
-        #when parsing a double digit op, expect to parse a num or a pre fix op
-        # when parsing a tilda remove it from the expect to parse?
+        self.expectToParse = TokenTypes
         self.insertUnary = True
-        self.tildaAvailable = True
-        self.parsedOperator = False
 
     # func that inserts a token to the list based on Type and value, inserts an unary minus if last parsed
     # requirements are met
+
+    def isExpected(self, TYPE):
+        return self.contains(TYPE, self.expectToParse)
+
+    def remove(self, t, L):
+        for lst in L:
+            if type(L) == list:
+                self.remove(t, lst)
+            else:
+                if lst == t:
+                    L.remove(lst)
+
+    def contains(self, t, L):
+        if type(L) == list:
+            return any(self.contains(t, l) for l in L)
+        else:
+            return t == L
+
+    def getExpectations(self, TYPE):
+        if TYPE is not 'TILDA':
+            self.expectToParse = []
+            if TYPE in digs:
+                self.expectToParse.append(PostFixOps)
+                self.expectToParse.append('BRACKET_CLOSE')
+                self.expectToParse.append(infixOps)
+                if not self.contains('TILDA', self.expectToParse):
+                    self.expectToParse.append('TILDA')
+            elif TYPE in PostFixOps:
+                self.expectToParse.append(PostFixOps)
+                self.expectToParse.append(infixOps)
+            elif TYPE in infixOps:
+                self.expectToParse.append(digs)
+                self.expectToParse.append('BRACKET_OPEN')
+                self.expectToParse.append(preFixOps)
+            elif TYPE in preFixOps:
+                self.expectToParse.append(preFixOps)
+                self.expectToParse.append(digs)
+        else:
+            self.remove('TILDA', self.expectToParse)
+
     def __insertToken(self, TYPE, value=None):
         # inserts token to end of the token array
+
         if TYPE is 'SUB' and self.insertUnary:
-            TYPE = "UNARY_MINUS"
-        elif TYPE is 'TILDA' and (not self.tildaAvailable):
-            raise DoubleTildaExcecption
-        elif TYPE is 'TILDA' and not self.insertUnary:
-            raise TildaException
-        elif TYPE in operators and (TYPE not in PostFixOps):
-            self.parsedOperator = True
+            TYPE = 'UNARY_MINUS'
         self.tokens.append(Token(TYPE, value))
+        if not self.isExpected(TYPE):
+            raise notExpectedToParseException(self.__curChar(), self.iterator, self.expectToParse)
+        self.getExpectations(TYPE)
 
     # func that fills up the tokens list from the string the lexer is built of
     def __getTokens(self):
@@ -42,16 +74,8 @@ class Lexer:
             elif self.__curChar() in digs:
                 self.__getNumberToken()
                 self.insertUnary = False
-            elif self.__curChar() in bracketSymbols:
+            elif self.__curChar() in operators or brackets:
                 self.__insertToken(TokenDict[self.equation[self.iterator]])
-                self.Next()
-            elif self.__curChar() in operators:
-                if self.parsedOperator and TokenDict[self.__curChar()] not in SingleDigOps:
-                    raise DoubleOperatorException
-                self.__insertToken(TokenDict[self.equation[self.iterator]])
-                if TokenDict[self.__curChar()] is 'TILDA':
-                    self.tildaAvailable = False
-                self.insertUnary = True
                 if TokenDict[self.__curChar()] not in SingleDigOps:
                     self.insertUnary = True
 
@@ -96,8 +120,6 @@ class Lexer:
         except Exception as LexingError:
             print(str(LexingError))
             return None
-
-
 
     # moves the string index forward by 1
     def Next(self):

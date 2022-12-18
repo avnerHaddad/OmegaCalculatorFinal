@@ -9,15 +9,8 @@ class Interpreter:
 
     # func that calls the recursive solver
     def solve(self):
-        try:
-            self.head = self.parser.Parse()
-            if self.head is None:
-                return
-            ans = self.recursiveSolve(self.head)
-            if ans is not None:
-                print(str(ans))
-        except Exception as parsingException:
-            print(str(parsingException))
+        self.head = self.parser.Parse()
+        return self.recursiveSolve(self.head)
 
     # solves the binary tree that was generated from the parser, scans tree untl reaches final leaf then calculates
     # back up using the internal calc method of each node

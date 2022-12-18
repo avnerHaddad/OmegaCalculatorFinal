@@ -1,8 +1,13 @@
 
+class MathException(Exception):
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return "unknown math exception occurred"
 
 
-
-class TildaException(Exception):
+class TildaException(MathException):
     def __init__(self):
         pass
 
@@ -10,7 +15,7 @@ class TildaException(Exception):
         return "tilda can not be used as an operator use '-' instead"
 
 
-class InvalidCharException(Exception):
+class InvalidCharException(MathException):
     def __init__(self, char):
         self.char = char
 
@@ -18,7 +23,7 @@ class InvalidCharException(Exception):
         return str(self.char) + " is not supported by this calculator"
 
 
-class NegativeFactorialException(Exception):
+class NegativeFactorialException(MathException):
     def __init__(self):
         pass
 
@@ -26,7 +31,7 @@ class NegativeFactorialException(Exception):
         return "factorial can not be done on a negative number"
 
 
-class FloatFactorialException(Exception):
+class FloatFactorialException(MathException):
     def __init__(self):
         pass
 
@@ -34,49 +39,49 @@ class FloatFactorialException(Exception):
         return "factorial can not be done on a float number, num must be an integer"
 
 
-class DoubleTildaExcecption(Exception):
+class DoubleTildaExcecption(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
         return "Tilda can only be used once on each number, consider using a '-' "
 
-class EmptyInputException(Exception):
+class EmptyInputException(MathException):
     def __init__(self, char):
         pass
 
     def __str__(self):
         return "please input something into the calculator, input must not be empty"
 
-class UnclosedBracketException(Exception):
+class UnclosedBracketException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
         return "all open brackets need to be closed off"
 
-class PostFixOperatorOutOfPlaceException(Exception):
+class PostFixOperatorOutOfPlaceException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
         return "Post fix operators must be after the number they are operated on(!,#...)"
 
-class ModByZeroException(Exception):
+class ModByZeroException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
         return "can not do module with 0 "
 
-class DoubleOperatorException(Exception):
+class DoubleOperatorException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
         return "can not place 2 double operand operators one after another"
 
-class UnusedOperatorException(Exception):
+class UnusedOperatorException(MathException):
     def __init__(self):
         pass
 
@@ -84,7 +89,7 @@ class UnusedOperatorException(Exception):
         return "left an operator with no number to operate on in the string"
 
 
-class ComplexNumberException(Exception):
+class ComplexNumberException(MathException):
     def __init__(self):
         pass
 
@@ -92,10 +97,19 @@ class ComplexNumberException(Exception):
         return "result is a complex number and therefore could not be calculated"
 
 
-class SolamitException(Exception):
+class SolamitException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
         return "number is too big to use # on and is represented with E"
 
+class notExpectedToParseException(MathException):
+    def __init__(self,char, index,expectedToParse):
+        self.char = char
+        self.index = index
+        self.expected = expectedToParse
+
+    def __str__(self):
+        return "the character: " + str(self.char) + \
+               " can not be in the index:" + str(self.index) + "expected to parse one of the following:" +  str(self.expected)

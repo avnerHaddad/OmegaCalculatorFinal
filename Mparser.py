@@ -10,13 +10,11 @@ class Mparser:
         self.index = 0
         self.tokens = None
         self.head = None
+        self.curVal = None
 
     # func that tries to get the tokens from the lexer, catches and return the exception if it fails
     def GetLexertokens(self):
-        try:
-            return self.lexer.GetTokens()
-        except Exception as LexerException:
-            print(str(LexerException))
+        return self.lexer.GetTokens()
 
     # func that calls the recursive decent algorithm
     def Parse(self):
@@ -116,7 +114,7 @@ class Mparser:
             self.__Next()
             return TokenNode(self.finalLevel(), None, type)
         else:
-            raise Exception("operator invalid in currrent index")
+            raise Exception("operator invalid in current index")
 
         return head
 
