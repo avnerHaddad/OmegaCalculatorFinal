@@ -5,8 +5,7 @@ from Config import *
 from IOManager import *
 import pytest
 
-tests = {"1+2+3": 5 , }
-
+tests = {"1+2+3": 5, }
 
 
 def calculatorUI():

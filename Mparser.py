@@ -14,7 +14,11 @@ class Mparser:
 
     # func that tries to get the tokens from the lexer, catches and return the exception if it fails
     def GetLexertokens(self):
-        return self.lexer.GetTokens()
+        tokens = self.lexer.GetTokens()
+        if len(tokens) == 0:
+            raise EmptyInputException
+        else:
+            return tokens
 
     # func that calls the recursive decent algorithm
     def Parse(self):

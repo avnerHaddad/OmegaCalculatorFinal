@@ -47,7 +47,7 @@ class InfinityException(MathException):
 
 
 class EmptyInputException(MathException):
-    def __init__(self, char):
+    def __init__(self):
         pass
 
     def __str__(self):
@@ -60,6 +60,7 @@ class UnclosedBracketException(MathException):
 
     def __str__(self):
         return "all open brackets need to be closed off"
+
 
 class ModByZeroException(MathException):
     def __init__(self):

@@ -77,7 +77,7 @@ class Lexer:
         # fills up the token array from the user input
         self.insertUnary = True
         while self.iterator < len(self.equation):
-            if self.curChar == ' ':
+            if self.curChar in whitespace:
                 self.Next()
             elif self.curChar in digs:
                 self.__getNumberToken()
@@ -101,7 +101,7 @@ class Lexer:
                 dot_count += 1
                 if dot_count > 1:
                     raise Exception("duplicate decimal point")
-            if self.curChar != ' ':
+            if self.curChar != whitespace:
                 number += self.curChar
             self.Next()
         number = float(number)
@@ -112,12 +112,9 @@ class Lexer:
     # public func that calls the internal get tokens and return the list genertated
     def GetTokens(self):
         # func to call externally, return an array of tokens from the input
-        if len(self.equation) == 0:
-            raise EmptyInputException
-        else:
-            self.curChar = self.equation[self.iterator]
-            self.__getTokens()
-            return self.tokens
+        self.curChar = self.equation[self.iterator]
+        self.__getTokens()
+        return self.tokens
 
     # moves the string index forward by 1
     def Next(self):
