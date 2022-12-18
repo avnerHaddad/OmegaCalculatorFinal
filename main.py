@@ -23,4 +23,12 @@ def calculatorUI():
             # ignore other errors that occured
 
 
-calculatorUI()
+def calculatorNoCatch():
+    str = getInput()
+    Inter = Interpreter(str)
+    answer = Inter.solve()
+    print(answer)
+
+
+# calculatorUI()
+calculatorNoCatch()

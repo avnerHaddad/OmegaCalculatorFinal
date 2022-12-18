@@ -46,14 +46,14 @@ class Lexer:
                 self.expectToParse.append(PostFixOps)
                 self.expectToParse.append(infixOps)
             elif TYPE in infixOps:
-                self.expectToParse.append(digs)
+                self.expectToParse.append('NUM')
                 self.expectToParse.append('BRACKET_OPEN')
                 self.expectToParse.append(preFixOps)
             elif TYPE in preFixOps:
                 self.expectToParse.append(preFixOps)
-                self.expectToParse.append(digs)
+                self.expectToParse.append('NUM')
             elif TYPE in 'BRACKET_OPEN':
-                self.expectToParse.append(digs)
+                self.expectToParse.append('NUM')
                 self.expectToParse.append(preFixOps)
             elif TYPE in 'BRACKET_CLOSE':
                 self.expectToParse.append(infixOps)
@@ -76,7 +76,7 @@ class Lexer:
     def __getTokens(self):
         # fills up the token array from the user input
         self.insertUnary = True
-        while self.iterator < len(self.equation):
+        while self.curChar is not None:
             if self.curChar in whitespace:
                 self.Next()
             elif self.curChar in digs:
@@ -101,15 +101,14 @@ class Lexer:
                 dot_count += 1
                 if dot_count > 1:
                     raise Exception("duplicate decimal point")
-            if self.curChar != whitespace:
+            if self.curChar not in whitespace:
                 number += self.curChar
             self.Next()
         number = float(number)
         number = round(number, 10)
         self.__insertToken('NUM', number)
-        self.parsedOperator = False
 
-    # public func that calls the internal get tokens and return the list genertated
+    # public func that calls the internal get tokens and return the list generated
     def GetTokens(self):
         # func to call externally, return an array of tokens from the input
         self.curChar = self.equation[self.iterator]

@@ -53,16 +53,14 @@ class Mparser:
         except IndexError:
             self.curVal = None
 
-    # func that goes over the current tkens and moves back all of the postfix operators to where they should have been
-    # operated lineraly
+    # func that goes over the current tokens and moves back all of the postfix operators to where they should have been
+    # operated linearly
     def fixPostFixOps(self):
         while self.curVal is not None:
             if self.curVal.type in PostFixOps:
 
                 toSwtich = self.tokens.pop(self.index)
                 self.__Back()
-                if self.curVal.type not in digs and self.curVal.type not in brackets:
-                    raise PostFixOperatorOutOfPlaceException
                 if self.curVal.type in brackets:
                     while self.curVal.type is not 'BRACKET_OPEN':
                         self.__Back()
