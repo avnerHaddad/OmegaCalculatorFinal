@@ -49,17 +49,12 @@ class Mparser:
         except IndexError:
             self.curVal = None
 
-    def __curVal(self):
-        if self.index >= len(self.tokens):
-            return None
-        else:
-            return self.tokens[self.index]
-
     # func that goes over the current tkens and moves back all of the postfix operators to where they should have been
     # operated lineraly
     def fixPostFixOps(self):
         while self.curVal is not None:
             if self.curVal.type in PostFixOps:
+
                 toSwtich = self.tokens.pop(self.index)
                 self.__Back()
                 if self.curVal.type not in digs and self.curVal.type not in brackets:
@@ -97,6 +92,8 @@ class Mparser:
     # the final part of the previous function, handles the specifics such as SingledigOps, Brackets and Nums
     def finalLevel(self):
         head = self.curVal
+        if self.curVal is None:
+            raise UnusedOperatorException
         if self.curVal.type == 'BRACKET_OPEN':
             self.__Next()
             head = self.generciLevel(1)
@@ -114,7 +111,7 @@ class Mparser:
             self.__Next()
             return TokenNode(self.finalLevel(), None, type)
         else:
-            raise Exception("operator invalid in current index")
+            raise UnusedOperatorException
 
         return head
 

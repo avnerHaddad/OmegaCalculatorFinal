@@ -11,6 +11,7 @@ class Lexer:
         self.tokens = []
         self.expectToParse = TokenTypes
         self.insertUnary = True
+        self.curChar = None
 
     # func that inserts a token to the list based on Type and value, inserts an unary minus if last parsed
     # requirements are met
@@ -51,6 +52,13 @@ class Lexer:
             elif TYPE in preFixOps:
                 self.expectToParse.append(preFixOps)
                 self.expectToParse.append(digs)
+            elif TYPE in 'BRACKET_OPEN':
+                self.expectToParse.append(digs)
+                self.expectToParse.append(preFixOps)
+            elif TYPE in 'BRACKET_CLOSE':
+                self.expectToParse.append(infixOps)
+                self.expectToParse.append(PostFixOps)
+
         else:
             self.remove('TILDA', self.expectToParse)
 
@@ -61,7 +69,7 @@ class Lexer:
             TYPE = 'UNARY_MINUS'
         self.tokens.append(Token(TYPE, value))
         if not self.isExpected(TYPE):
-            raise notExpectedToParseException(self.__curChar(), self.iterator, self.expectToParse)
+            raise notExpectedToParseException(self.curChar, self.iterator, self.expectToParse)
         self.getExpectations(TYPE)
 
     # func that fills up the tokens list from the string the lexer is built of
@@ -69,59 +77,53 @@ class Lexer:
         # fills up the token array from the user input
         self.insertUnary = True
         while self.iterator < len(self.equation):
-            if self.__curChar() == ' ':
+            if self.curChar == ' ':
                 self.Next()
-            elif self.__curChar() in digs:
+            elif self.curChar in digs:
                 self.__getNumberToken()
                 self.insertUnary = False
-            elif self.__curChar() in operators or brackets:
+            elif self.curChar in operators or self.curChar in bracketSymbols:
                 self.__insertToken(TokenDict[self.equation[self.iterator]])
-                if TokenDict[self.__curChar()] not in SingleDigOps:
+                if TokenDict[self.curChar] not in SingleDigOps:
                     self.insertUnary = True
 
                 self.Next()
-
-
             else:
-                raise InvalidCharException(self.__curChar())
-        if self.parsedOperator:
-            raise UnusedOperatorException
+                raise InvalidCharException(self.curChar)
 
-    def __curChar(self):
-        # return the value/char the iterator is currently at
-        if self.iterator < len(self.equation):
-            return self.equation[self.iterator]
-
-    # sub func for getTokens, called once a digit is reached and parsed the entire num into one token
+    # iterates over rest of the number and creates a number token, called when encountering a digit
     def __getNumberToken(self):
-        # iterates over rest of the number and creates a number token, called when encountering a digit
-
         number = ''
-        dotCount = 0
-        while (self.__curChar() in digs or self.__curChar() == '.') and self.iterator < len(
+        dot_count = 0
+        while (self.curChar in digs or self.curChar == '.') and self.iterator < len(
                 self.equation):
-            if self.__curChar() == '.':
-                dotCount += 1
-                if dotCount > 1:
+            if self.curChar == '.':
+                dot_count += 1
+                if dot_count > 1:
                     raise Exception("duplicate decimal point")
-            if self.__curChar() != ' ':
-                number += self.__curChar()
+            if self.curChar != ' ':
+                number += self.curChar
             self.Next()
-
-        self.__insertToken('NUM', float(number))
+        number = float(number)
+        number = round(number, 10)
+        self.__insertToken('NUM', number)
         self.parsedOperator = False
 
     # public func that calls the internal get tokens and return the list genertated
     def GetTokens(self):
         # func to call externally, return an array of tokens from the input
-        try:
+        if len(self.equation) == 0:
+            raise EmptyInputException
+        else:
+            self.curChar = self.equation[self.iterator]
             self.__getTokens()
             return self.tokens
-        except Exception as LexingError:
-            print(str(LexingError))
-            return None
 
     # moves the string index forward by 1
     def Next(self):
         # advance the iterator
-        self.iterator += 1
+        try:
+            self.iterator += 1
+            self.curChar = self.equation[self.iterator]
+        except:
+            self.curChar = None

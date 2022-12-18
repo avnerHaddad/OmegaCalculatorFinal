@@ -17,7 +17,8 @@ def calculatorUI():
         except MathException as mathException:
             print(mathException.__str__())
         except Exception as Others:
-            pass
-            #ignore other errors that occured
+            print(Others)
+            # ignore other errors that occured
+
 
 calculatorUI()

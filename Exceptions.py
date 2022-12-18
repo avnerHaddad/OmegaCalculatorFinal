@@ -1,4 +1,3 @@
-
 class MathException(Exception):
     def __init__(self):
         pass
@@ -7,12 +6,12 @@ class MathException(Exception):
         return "unknown math exception occurred"
 
 
-class TildaException(MathException):
+class divByZeroException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
-        return "tilda can not be used as an operator use '-' instead"
+        return "cant divide by zero..."
 
 
 class InvalidCharException(MathException):
@@ -39,12 +38,13 @@ class FloatFactorialException(MathException):
         return "factorial can not be done on a float number, num must be an integer"
 
 
-class DoubleTildaExcecption(MathException):
+class InfinityException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
-        return "Tilda can only be used once on each number, consider using a '-' "
+        return "number inside the equation reached infinity and thus can not be operated on in this calc"
+
 
 class EmptyInputException(MathException):
     def __init__(self, char):
@@ -53,12 +53,14 @@ class EmptyInputException(MathException):
     def __str__(self):
         return "please input something into the calculator, input must not be empty"
 
+
 class UnclosedBracketException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
         return "all open brackets need to be closed off"
+
 
 class PostFixOperatorOutOfPlaceException(MathException):
     def __init__(self):
@@ -67,26 +69,13 @@ class PostFixOperatorOutOfPlaceException(MathException):
     def __str__(self):
         return "Post fix operators must be after the number they are operated on(!,#...)"
 
+
 class ModByZeroException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
         return "can not do module with 0 "
-
-class DoubleOperatorException(MathException):
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        return "can not place 2 double operand operators one after another"
-
-class UnusedOperatorException(MathException):
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        return "left an operator with no number to operate on in the string"
 
 
 class ComplexNumberException(MathException):
@@ -97,19 +86,29 @@ class ComplexNumberException(MathException):
         return "result is a complex number and therefore could not be calculated"
 
 
-class SolamitException(MathException):
+class BigNumberException(MathException):
     def __init__(self):
         pass
 
     def __str__(self):
-        return "number is too big to use # on and is represented with E"
+        return "number is too big and therefore, different math operations could not be available"
+
 
 class notExpectedToParseException(MathException):
-    def __init__(self,char, index,expectedToParse):
+    def __init__(self, char, index, expected_to_parse):
         self.char = char
         self.index = index
-        self.expected = expectedToParse
+        self.expected = expected_to_parse
 
     def __str__(self):
         return "the character: " + str(self.char) + \
-               " can not be in the index:" + str(self.index) + "expected to parse one of the following:" +  str(self.expected)
+               " can not be in the index:" + str(self.index) + "expected to parse one of the following:" + str(
+            self.expected)
+
+
+class UnusedOperatorException(MathException):
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return "operator missing an operand at the end of equation"

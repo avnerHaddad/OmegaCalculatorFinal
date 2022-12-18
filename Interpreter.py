@@ -10,9 +10,9 @@ class Interpreter:
     # func that calls the recursive solver
     def solve(self):
         self.head = self.parser.Parse()
-        return self.recursiveSolve(self.head)
+        return round(self.recursiveSolve(self.head), 10)
 
-    # solves the binary tree that was generated from the parser, scans tree untl reaches final leaf then calculates
+    # solves the binary tree that was generated from the parser, scans tree until reaches final leaf then calculates
     # back up using the internal calc method of each node
     def recursiveSolve(self, head):
         if not isinstance(head.val1, float) and head.val1 is not None:

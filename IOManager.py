@@ -7,19 +7,15 @@ def PrintTOConsole(str):
 
 def getInput():
     try:
-
         print("\nenter your calculation:\n")
         userinput = input(">>")
-        if not userinput.isspace() and userinput is not '':
-            return userinput
-        else:
-            print("string is empty")
-            raise EmptyInputException
+        return userinput
     except EOFError:
-        print("end of file error occurred, try again")
+        print("you pressed EOF and program must close")
+        sys.exit(1)
     except EmptyInputException:
         print("you can not use an empty input, enter something")
     except KeyboardInterrupt:
-        print("exsiting the calculator")
+        print("exiting the calculator")
         sys.exit(1)
 
