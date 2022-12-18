@@ -36,7 +36,7 @@ class Lexer:
     def getExpectations(self, TYPE):
         if TYPE is not 'TILDA':
             self.expectToParse = []
-            if TYPE in digs:
+            if TYPE is 'NUM':
                 self.expectToParse.append(PostFixOps)
                 self.expectToParse.append('BRACKET_CLOSE')
                 self.expectToParse.append(infixOps)

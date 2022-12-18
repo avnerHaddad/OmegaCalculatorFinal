@@ -3,6 +3,10 @@ from Mparser import Mparser
 from Interpreter import Interpreter
 from Config import *
 from IOManager import *
+import pytest
+
+tests = {"1+2+3": 5 , }
+
 
 
 def calculatorUI():
@@ -16,8 +20,7 @@ def calculatorUI():
             print(answer)
         except MathException as mathException:
             print(mathException.__str__())
-        except Exception as Others:
-            print(Others)
+
             # ignore other errors that occured
 
 

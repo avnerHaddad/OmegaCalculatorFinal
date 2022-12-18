@@ -61,15 +61,6 @@ class UnclosedBracketException(MathException):
     def __str__(self):
         return "all open brackets need to be closed off"
 
-
-class PostFixOperatorOutOfPlaceException(MathException):
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        return "Post fix operators must be after the number they are operated on(!,#...)"
-
-
 class ModByZeroException(MathException):
     def __init__(self):
         pass
@@ -84,14 +75,6 @@ class ComplexNumberException(MathException):
 
     def __str__(self):
         return "result is a complex number and therefore could not be calculated"
-
-
-class BigNumberException(MathException):
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        return "number is too big and therefore, different math operations could not be available"
 
 
 class notExpectedToParseException(MathException):
