@@ -54,13 +54,15 @@ class Mparser:
             self.curVal = None
 
     # func that goes over the current tokens and moves back all of the postfix operators to where they should have been
-    # operated linearly
+    # operated prefixly...
     def fixPostFixOps(self):
+        # iterate over tokens
         while self.curVal is not None:
+            # if reached a post fix op, remove it and go back
             if self.curVal.type in PostFixOps:
-
                 toSwtich = self.tokens.pop(self.index)
                 self.__Back()
+                # if there is a bracket then move back until the opener of this bracket
                 if self.curVal.type == 'BRACKET_CLOSE':
                     count = -1
                     while self.curVal.type is not 'BRACKET_OPEN' or count is not 0:
@@ -69,7 +71,7 @@ class Mparser:
                         elif self.curVal.type is 'BRACKET_CLOSE':
                             count += 1
                         self.__Back()
-
+                # move back until reaching an operator that is lower in priority than the postfixOp
                 while self.index > 0 and TokenPowerDict[self.prevVal().type] >= TokenPowerDict[toSwtich.type]:
                     self.__Back()
                 self.tokens.insert(self.index, toSwtich)

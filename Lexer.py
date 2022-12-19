@@ -4,13 +4,15 @@ from Exceptions import *
 
 
 class Lexer:
-    # lexer class for turning user input into identifiable tokens
+    # lexer class for turning user input into identifiable token objects
     def __init__(self, equation):
         self.tildaAvailable = True
         self.equation = equation
         self.iterator = 0
         self.tokens = []
+        # holds all of the Types the lexer is predicting to lex next
         self.expectToParse = TokenTypes
+        # field that declares whether next minus should be unary
         self.insertUnary = True
         self.curChar = None
 
@@ -22,20 +24,23 @@ class Lexer:
             return False
         return self.contains(TYPE, self.expectToParse)
 
-    def remove(self, t, L):
-        for lst in L:
-            if type(L) == list:
-                self.remove(t, lst)
+    # removes an item recursively from all subLists of a list
+    def remove(self, Item, List):
+        for lst in List:
+            if type(List) == list:
+                self.remove(Item, lst)
             else:
-                if lst == t:
-                    L.remove(lst)
+                if lst == Item:
+                    List.remove(lst)
 
-    def contains(self, t, L):
-        if type(L) == list:
-            return any(self.contains(t, l) for l in L)
+    # checks an item recursively from all subLists of a list if it exits inside
+    def contains(self, Item, List):
+        if type(List) == list:
+            return any(self.contains(Item, l) for l in List)
         else:
-            return t == L
+            return Item == List
 
+    # func that updates the ExpectToParse field based on what was just parsed
     def getExpectations(self, TYPE):
         # add orginised lists for them all?
         if TYPE is not 'TILDA':
@@ -69,8 +74,9 @@ class Lexer:
         else:
             self.tildaAvailable = False
 
+
     def __insertToken(self, TYPE, value=None):
-        # inserts token to end of the token array
+        # inserts token to end of the token array while checking and updating expectations
 
         if TYPE is 'SUB' and self.insertUnary:
             TYPE = 'UNARY_MINUS'
