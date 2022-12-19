@@ -20,8 +20,6 @@ def calculatorUI():
         except MathException as mathException:
             print(mathException.__str__())
 
-            # ignore other errors that occured
-
 
 def calculatorNoCatch():
     str = getInput()
@@ -30,5 +28,5 @@ def calculatorNoCatch():
     print(answer)
 
 
-# calculatorUI()
-calculatorNoCatch()
+calculatorUI()
+# calculatorNoCatch()
