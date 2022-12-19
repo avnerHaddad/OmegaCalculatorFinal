@@ -46,31 +46,20 @@ class Lexer:
         if TYPE is not 'TILDA':
             self.expectToParse = []
             if TYPE is 'NUM':
-                self.expectToParse.append(PostFixOps)
-                self.expectToParse.append('BRACKET_CLOSE')
-                self.expectToParse.append(infixOps)
+                self.expectToParse.append(afterNumAndPostFix)
                 self.tildaAvailable = True
             elif TYPE in PostFixOps:
-                self.expectToParse.append(PostFixOps)
-                self.expectToParse.append(infixOps)
-                self.expectToParse.append('BRACKET_CLOSE')
+                self.expectToParse.append(afterNumAndPostFix)
             elif TYPE in infixOps:
-                self.expectToParse.append('NUM')
-                self.expectToParse.append('BRACKET_OPEN')
-                self.expectToParse.append(preFixOps)
+                self.expectToParse.append(afterInfixAndPrefix)
             elif TYPE in preFixOps:
-                self.expectToParse.append(preFixOps)
-                self.expectToParse.append('BRACKET_OPEN')
-                self.expectToParse.append('NUM')
+                self.expectToParse.append(afterInfixAndPrefix)
             elif TYPE in 'BRACKET_OPEN':
-                self.expectToParse.append('NUM')
-                self.expectToParse.append(preFixOps)
-                self.expectToParse.append('BRACKET_OPEN')
+                self.expectToParse.append(afterInfixAndPrefix)
                 self.tildaAvailable = True
             elif TYPE in 'BRACKET_CLOSE':
-                self.expectToParse.append('BRACKET_CLOSE')
-                self.expectToParse.append(infixOps)
-                self.expectToParse.append(PostFixOps)
+                self.expectToParse.append(afterBracketClose)
+
         else:
             self.tildaAvailable = False
 
