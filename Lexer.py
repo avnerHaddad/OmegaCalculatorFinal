@@ -34,6 +34,7 @@ class Lexer:
             return t == L
 
     def getExpectations(self, TYPE):
+        #add orginised lists for them all?
         if TYPE is not 'TILDA':
             self.expectToParse = []
             if TYPE is 'NUM':
@@ -45,20 +46,23 @@ class Lexer:
             elif TYPE in PostFixOps:
                 self.expectToParse.append(PostFixOps)
                 self.expectToParse.append(infixOps)
+                self.expectToParse.append('BRACKET_CLOSE')
             elif TYPE in infixOps:
                 self.expectToParse.append('NUM')
                 self.expectToParse.append('BRACKET_OPEN')
                 self.expectToParse.append(preFixOps)
             elif TYPE in preFixOps:
                 self.expectToParse.append(preFixOps)
+                self.expectToParse.append('BRACKET_OPEN')
                 self.expectToParse.append('NUM')
             elif TYPE in 'BRACKET_OPEN':
                 self.expectToParse.append('NUM')
                 self.expectToParse.append(preFixOps)
+                self.expectToParse.append('BRACKET_OPEN')
             elif TYPE in 'BRACKET_CLOSE':
+                self.expectToParse.append('BRACKET_CLOSE')
                 self.expectToParse.append(infixOps)
                 self.expectToParse.append(PostFixOps)
-
         else:
             self.remove('TILDA', self.expectToParse)
 
@@ -84,7 +88,7 @@ class Lexer:
                 self.insertUnary = False
             elif self.curChar in operators or self.curChar in bracketSymbols:
                 self.__insertToken(TokenDict[self.equation[self.iterator]])
-                if TokenDict[self.curChar] not in SingleDigOps:
+                if TokenDict[self.curChar] not in SingleDigOps and TokenDict[self.curChar] is not 'BRACKET_CLOSE':
                     self.insertUnary = True
 
                 self.Next()
