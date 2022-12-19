@@ -43,7 +43,7 @@ class InfinityException(MathException):
         pass
 
     def __str__(self):
-        return "number inside the equation reached infinity and thus can not be operated on in this calc"
+        return "number inside the equation reached infinity(too big) and thus can not be operated on in this calc"
 
 
 class EmptyInputException(MathException):
@@ -86,7 +86,7 @@ class notExpectedToParseException(MathException):
 
     def __str__(self):
         return "the character: " + str(self.char) + \
-               " can not be in the index:" + str(self.index) + "expected to parse one of the following:" + str(
+               " can not be in the index: " + str(self.index) + "expected to parse one of the following: \n" + str(
             self.expected)
 
 
