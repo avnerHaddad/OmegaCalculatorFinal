@@ -1,11 +1,6 @@
-from Lexer import Lexer
-from Mparser import Mparser
 from Interpreter import Interpreter
 from Config import *
 from IOManager import *
-import pytest
-
-tests = {"1+2+3": 5, }
 
 
 def calculatorUI():
@@ -21,12 +16,5 @@ def calculatorUI():
             print(mathException.__str__())
 
 
-def calculatorNoCatch():
-    str = getInput()
-    Inter = Interpreter(str)
-    answer = Inter.solve()
-    print(answer)
-
-
-calculatorUI()
-# calculatorNoCatch()
+def main(args):
+    calculatorUI()
