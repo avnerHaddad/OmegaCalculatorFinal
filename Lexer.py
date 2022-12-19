@@ -17,54 +17,23 @@ class Lexer:
     # requirements are met
 
     def isExpected(self, TYPE):
-        return self.contains(TYPE, self.expectToParse)
-
-    def remove(self, t, L):
-        for lst in L:
-            if type(L) == list:
-                self.remove(t, lst)
-            else:
-                if lst == t:
-                    L.remove(lst)
-
-    def contains(self, t, L):
-        if type(L) == list:
-            return any(self.contains(t, l) for l in L)
-        else:
-            return t == L
+        return self.expectToParse.__contains__(TYPE)
 
     def getExpectations(self, TYPE):
-        #add orginised lists for them all?
         if TYPE is not 'TILDA':
             self.expectToParse = []
             if TYPE is 'NUM':
-                self.expectToParse.append(PostFixOps)
-                self.expectToParse.append('BRACKET_CLOSE')
-                self.expectToParse.append(infixOps)
-                if not self.contains('TILDA', self.expectToParse):
+                self.expectToParse = ExpectToParseNumAndPostFix
+                if not self.expectToParse.__contains__('TILDA'):
                     self.expectToParse.append('TILDA')
             elif TYPE in PostFixOps:
-                self.expectToParse.append(PostFixOps)
-                self.expectToParse.append(infixOps)
-                self.expectToParse.append('BRACKET_CLOSE')
-            elif TYPE in infixOps:
-                self.expectToParse.append('NUM')
-                self.expectToParse.append('BRACKET_OPEN')
-                self.expectToParse.append(preFixOps)
-            elif TYPE in preFixOps:
-                self.expectToParse.append(preFixOps)
-                self.expectToParse.append('BRACKET_OPEN')
-                self.expectToParse.append('NUM')
-            elif TYPE in 'BRACKET_OPEN':
-                self.expectToParse.append('NUM')
-                self.expectToParse.append(preFixOps)
-                self.expectToParse.append('BRACKET_OPEN')
+                self.expectToParse = ExpectToParseNumAndPostFix
+            elif TYPE in infixOps or TYPE in preFixOps or TYPE is 'BRACKET_OPEN':
+                self.expectToParse = ExpectToParseInfixAndPrefix
             elif TYPE in 'BRACKET_CLOSE':
-                self.expectToParse.append('BRACKET_CLOSE')
-                self.expectToParse.append(infixOps)
-                self.expectToParse.append(PostFixOps)
+                self.expectToParse = ExpectToParseBracketClose
         else:
-            self.remove('TILDA', self.expectToParse)
+            self.expectToParse.remove('TILDA')
 
     def __insertToken(self, TYPE, value=None):
         # inserts token to end of the token array
