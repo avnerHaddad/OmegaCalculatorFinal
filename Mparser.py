@@ -13,7 +13,7 @@ class Mparser:
         self.curVal = None
 
     # func that tries to get the tokens from the lexer, catches and return the exception if it fails
-    def GetLexertokens(self):
+    def GetLexerTokens(self):
         tokens = self.lexer.GetTokens()
         if len(tokens) == 0:
             raise EmptyInputException
@@ -22,7 +22,7 @@ class Mparser:
 
     # func that calls the recursive decent algorithm
     def Parse(self):
-        self.tokens = self.GetLexertokens()
+        self.tokens = self.GetLexerTokens()
         if self.tokens is None:
             return None
         self.curVal = self.tokens[self.index]
@@ -61,8 +61,13 @@ class Mparser:
 
                 toSwtich = self.tokens.pop(self.index)
                 self.__Back()
-                if self.curVal.type in brackets:
-                    while self.curVal.type is not 'BRACKET_OPEN':
+                if self.curVal.type == 'BRACKET_CLOSE':
+                    count = -1
+                    while self.curVal.type is not 'BRACKET_OPEN' or count is not 0:
+                        if self.curVal.type is 'BRACKET_OPEN':
+                            count -= 1
+                        elif self.curVal.type is 'BRACKET_CLOSE':
+                            count += 1
                         self.__Back()
 
                 while self.index > 0 and TokenPowerDict[self.prevVal().type] >= TokenPowerDict[toSwtich.type]:
