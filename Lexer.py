@@ -6,6 +6,7 @@ from Exceptions import *
 class Lexer:
     # lexer class for turning user input into identifiable tokens
     def __init__(self, equation):
+        self.tildaAvailable = True
         self.equation = equation
         self.iterator = 0
         self.tokens = []
@@ -17,6 +18,8 @@ class Lexer:
     # requirements are met
 
     def isExpected(self, TYPE):
+        if TYPE is 'TILDA' and not self.tildaAvailable:
+            return False
         return self.contains(TYPE, self.expectToParse)
 
     def remove(self, t, L):
@@ -41,8 +44,7 @@ class Lexer:
                 self.expectToParse.append(PostFixOps)
                 self.expectToParse.append('BRACKET_CLOSE')
                 self.expectToParse.append(infixOps)
-                if not self.contains('TILDA', self.expectToParse):
-                    self.expectToParse.append('TILDA')
+                self.tildaAvailable = True
             elif TYPE in PostFixOps:
                 self.expectToParse.append(PostFixOps)
                 self.expectToParse.append(infixOps)
@@ -59,12 +61,14 @@ class Lexer:
                 self.expectToParse.append('NUM')
                 self.expectToParse.append(preFixOps)
                 self.expectToParse.append('BRACKET_OPEN')
+                self.tildaAvailable = True
             elif TYPE in 'BRACKET_CLOSE':
                 self.expectToParse.append('BRACKET_CLOSE')
                 self.expectToParse.append(infixOps)
                 self.expectToParse.append(PostFixOps)
         else:
-            self.remove('TILDA', self.expectToParse)
+            self.tildaAvailable = False
+
     def __insertToken(self, TYPE, value=None):
         # inserts token to end of the token array
 

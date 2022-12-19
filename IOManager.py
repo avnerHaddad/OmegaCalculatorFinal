@@ -12,10 +12,10 @@ def getInput():
         return userinput
     except EOFError:
         print("you pressed EOF and program must close")
-        sys.exit(1)
+        exit(1)
     except EmptyInputException:
         print("you can not use an empty input, enter something")
     except KeyboardInterrupt:
         print("exiting the calculator")
-        sys.exit(1)
+        exit(1)
 
