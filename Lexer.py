@@ -28,7 +28,7 @@ class Lexer:
                     self.expectToParse.append('TILDA')
             elif TYPE in PostFixOps:
                 self.expectToParse = ExpectToParseNumAndPostFix
-            elif TYPE in infixOps or TYPE in preFixOps or TYPE is 'BRACKET_OPEN':
+            elif TYPE in infixOps or TYPE in preFixOps or TYPE in 'BRACKET_OPEN':
                 self.expectToParse = ExpectToParseInfixAndPrefix
             elif TYPE in 'BRACKET_CLOSE':
                 self.expectToParse = ExpectToParseBracketClose
