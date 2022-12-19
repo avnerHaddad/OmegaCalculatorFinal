@@ -5,24 +5,24 @@ from Config import *
 
 class Mparser:
 
-    def __init__(self, str):
-        self.lexer = Lexer(str)
+    def __init__(self):
+        self.lexer = Lexer()
         self.index = 0
         self.tokens = None
         self.head = None
         self.curVal = None
 
     # func that tries to get the tokens from the lexer, catches and return the exception if it fails
-    def GetLexerTokens(self):
-        tokens = self.lexer.GetTokens()
+    def GetLexerTokens(self, inputString):
+        tokens = self.lexer.GetTokens(inputString)
         if len(tokens) == 0:
             raise EmptyInputException
         else:
             return tokens
 
     # func that calls the recursive decent algorithm
-    def Parse(self):
-        self.tokens = self.GetLexerTokens()
+    def Parse(self, inputString):
+        self.tokens = self.GetLexerTokens(inputString)
         if self.tokens is None:
             return None
         self.curVal = self.tokens[self.index]

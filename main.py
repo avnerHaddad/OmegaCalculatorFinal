@@ -1,20 +1,19 @@
-from Interpreter import Interpreter
+from MathInterpreter import OmegaMathInterpreter
 from Config import *
 from IOManager import *
 
 
 def calculatorUI():
     PrintTOConsole(welcomeMsgStr)
+    MathInterpreter = OmegaMathInterpreter()
     while True:
-        str = getInput()
+        inputString = getInput()
         print("\n\n\n\n")
-        Inter = Interpreter(str)
         try:
-            answer = Inter.solve()
+            answer = MathInterpreter.solve(inputString)
             print(answer)
         except MathException as mathException:
             print(mathException.__str__())
 
 
-def main(args):
-    calculatorUI()
+calculatorUI()

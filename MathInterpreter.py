@@ -2,14 +2,14 @@ from Mparser import Mparser
 from Exceptions import *
 
 
-class Interpreter:
-    def __init__(self, str):
-        self.parser = Mparser(str)
+class OmegaMathInterpreter:
+    def __init__(self):
+        self.parser = Mparser()
         self.head = None
 
     # func that calls the recursive solver
-    def solve(self):
-        self.head = self.parser.Parse()
+    def solve(self,inputString):
+        self.head = self.parser.Parse(inputString)
         return round(self.recursiveSolve(self.head), 10)
 
     # solves the binary tree that was generated from the parser, scans tree until reaches final leaf then calculates

@@ -1,12 +1,14 @@
 import pytest
 
-from Interpreter import Interpreter
+from MathInterpreter import OmegaMathInterpreter
 from Exceptions import *
 
 
 def calc(inputStr):
-    Inter = Interpreter(inputStr)
-    answer = Inter.solve()
+    MathInterpreter = OmegaMathInterpreter()
+    inputString = inputStr
+    print("\n\n\n\n")
+    answer = MathInterpreter.solve(inputString)
     return answer
 
 

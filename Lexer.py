@@ -5,13 +5,13 @@ from Exceptions import *
 
 class Lexer:
     # lexer class for turning user input into identifiable token objects
-    def __init__(self, equation):
+    def __init__(self):
         self.tildaAvailable = True
-        self.equation = equation
+        self.equation = None
         self.iterator = 0
         self.tokens = []
         # holds all the Types the lexer is predicting to lex next
-        self.expectToParse = TokenTypes
+        self.expectToParse = afterInfixAndPrefix
         # field that declares whether next minus should be unary
         self.insertUnary = True
         self.curChar = None
@@ -110,8 +110,9 @@ class Lexer:
         self.__insertToken('NUM', number)
 
     # public func that calls the internal get tokens and return the list generated
-    def GetTokens(self):
+    def GetTokens(self, equation):
         # func to call externally, return an array of tokens from the input
+        self.equation = equation
         self.curChar = self.equation[self.iterator]
         self.__getTokens()
         return self.tokens
@@ -122,5 +123,5 @@ class Lexer:
         try:
             self.iterator += 1
             self.curChar = self.equation[self.iterator]
-        except:
+        except IndexError:
             self.curChar = None
