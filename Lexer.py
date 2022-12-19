@@ -10,7 +10,7 @@ class Lexer:
         self.equation = equation
         self.iterator = 0
         self.tokens = []
-        # holds all of the Types the lexer is predicting to lex next
+        # holds all the Types the lexer is predicting to lex next
         self.expectToParse = TokenTypes
         # field that declares whether next minus should be unary
         self.insertUnary = True
@@ -73,7 +73,6 @@ class Lexer:
                 self.expectToParse.append(PostFixOps)
         else:
             self.tildaAvailable = False
-
 
     def __insertToken(self, TYPE, value=None):
         # inserts token to end of the token array while checking and updating expectations
